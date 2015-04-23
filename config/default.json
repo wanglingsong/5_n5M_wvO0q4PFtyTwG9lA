@@ -1,0 +1,17 @@
+{
+	"beanstalkd" : {
+		"host" : "challenge.aftership.net",
+		"port" : 11300,
+		"tube" : "ex_rate"
+	},
+	"mongodb" : {
+		"host" : "",
+		"port" : 234
+	},
+	"worker" : {
+		"maxSuccess" : 10,
+		"successInterval" : 10,
+		"maxError" : 3,
+		"errorInterval" : 3
+	}
+}
