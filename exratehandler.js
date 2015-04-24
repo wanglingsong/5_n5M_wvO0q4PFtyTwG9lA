@@ -1,16 +1,12 @@
 var Q = require('q'),
 mongoservice = require('./mongoservice'),
+exfetcher = require('./exfetcher'),
 config = require('config'),
 workerConfig = config.get('worker'),
 maxSuccess = workerConfig.maxSuccess,
 maxError = workerConfig.maxError,
 successInterval = workerConfig.successInterval,
 errorInterval = workerConfig.errorInterval;
-
-function fetch(callback) {
-	// TODO
-	return callback(null, 0.1);
-}
 
 module.exports = function()
 {
@@ -25,7 +21,7 @@ module.exports = function()
     	var from = payload.from;
     	var to = payload.to;
     	
-    	var ex_fetch = Q.denodeify(fetch);
+    	var ex_fetch = Q.denodeify(exfetcher.fetch);
     	var mg_saveExRate = Q.denodeify(mongoservice.saveExRate);
     	var mg_onSuccess = Q.denodeify(mongoservice.onSuccess);
     	var mg_onError = Q.denodeify(mongoservice.onError);
@@ -34,7 +30,7 @@ module.exports = function()
     		console.error(err);
     		callback('bury');
     	}
-    	ex_fetch()
+    	ex_fetch(from, to)
     	.then(function (rate){
     		mg_saveExRate(from, to, rate)
     		.then(function(){
