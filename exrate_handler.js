@@ -44,7 +44,7 @@ module.exports = function() {
 					} else {
 						callback("release", success_interval);
 					}
-				});
+				}, handleMongoError);
 			}, handleMongoError);
 		}, function(err) {
 			console.error(err);
