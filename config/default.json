@@ -5,13 +5,16 @@
 		"tube" : "ex_rate"
 	},
 	"mongodb" : {
-		"host" : "",
-		"port" : 234
+		"host" : "ds029317.mongolab.com",
+		"port" : 29317,
+		"database" : "ex_rate",
+		"username": "challenge",
+		"password": "challenge"
 	},
 	"worker" : {
-		"maxSuccess" : 10,
-		"successInterval" : 10,
-		"maxError" : 3,
-		"errorInterval" : 3
+		"max_success" : 10,
+		"success_interval" : 10,
+		"max_error" : 3,
+		"error_interval" : 3
 	}
 }

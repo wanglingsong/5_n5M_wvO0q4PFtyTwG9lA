@@ -1,17 +1,17 @@
-var config = require('config');
-var Beanworker = require('fivebeans').worker;
-var beanConfig = config.get('beanstalkd');
-var options =
+var config = require('config'),
+Beanworker = require('fivebeans').worker,
+bean_config = config.get('beanstalkd'),
+options =
 {
     id: 'exRate_Worker',
-    host: beanConfig.host,
-    port: beanConfig.port,
+    host: bean_config.host,
+    port: bean_config.port,
     handlers:
     {
-        exrate: require('./exratehandler')()
+        exrate: require('./exrate_handler')()
     },
     ignoreDefault: true
-};
-var worker = new Beanworker(options);
-worker.start([beanConfig.tube]);
+},
+worker = new Beanworker(options);
+worker.start([bean_config.tube]);
 console.log("worker started");
