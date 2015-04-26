@@ -27,18 +27,18 @@ module.exports = function()
     	var mg_onError = Q.denodeify(mongo_service.onError);
     	
     	function handleMongoError(err) {
-    		console.error(err);
+    		console.error('fatal mongo error: %j', err);
     		callback('bury');
     	}
     	
-    	function onJobStopped() {
-			callback('success');   		
-    		console.log('worker stopped');
+    	function stopJob() {
     		mongo_service.removeJob(from, to, function(err) {
     			if (err) {
-    				console.error('failed to remove job: %j', err);
+    				handleMongoError(err);
     			} else {
     				console.log('job removed');
+    				callback('success');   		
+    				console.log('worker stopped');
     			}
     		});    		
     	}
@@ -52,7 +52,7 @@ module.exports = function()
     			.then(function(count) {
     	    		console.log('success count: %d', count);
         			if (count >= max_success) {
-        				onJobStopped();
+        				stopJob();
         			} else {
             			callback("release", success_interval);
         			}                			
@@ -64,7 +64,7 @@ module.exports = function()
     		.then(function(count) {
 	    		console.log('error count: %d', count);    			
     			if (count >= max_error) {
-    				onJobStopped();
+    				stopJob();
     			} else {
         			callback("release", error_interval);        				
     			}
